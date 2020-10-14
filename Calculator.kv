@@ -1,0 +1,98 @@
+#:kivy 2.0.0
+
+
+# This is like a Button widget template, and the 'nickname' given is Number
+# So any widget by the name Number will have whatever property this has, in common
+# Here, all of the Number widgets will add their text to the main Label
+# This is not in the same class as calculator, so we fetch the answer Label text by
+# calling app.root.ids gives us all ids in the root class
+# app.root.ids.answer.text refers to the text of Label with id = 'answer' in root class
+<Number@Button>:
+    on_press: app.root.ids.answer.text += self.text
+
+<Calculator>:
+    orientation: 'vertical'
+    # Main answer label
+    Label:
+        id: answer
+        font_size: 100
+        text_size: 800, 100
+        halign: 'center'
+        valign: 'top'
+    # GridLayout for the buttons
+    GridLayout:
+        cols: 4
+        rows: 4
+        Number:
+            text: '+'
+        Number:
+            text: '-'
+        Number:
+            text: '*'
+        Number:
+            text: '/'
+        Number:
+            text: '1'
+        Number:
+            text: '2'
+        Number:
+            text: '3'
+        # Box layout for CLR and BCK
+        BoxLayout:
+            Button:
+                text: 'CLR'
+                # This clears the answer text 
+                on_press: answer.text = ""
+            Button:
+                text: 'BCK'
+                # This removes one character from answer text (backspace)
+                on_press: answer.text = answer.text[:-1]
+        Number:
+            text: '4'
+        Number:
+            text: '5'
+        Number:
+            text: '6'
+        Button:
+            text: '='
+            # This button is for evaluating the expression
+            # root.evl() calls the evl() method from the root class
+            # which in the python file is Calculator class
+            # there, in evl method, we have a try-except clause
+            # it will first try to set the answer text to answer
+            # if error, it will create popups object and open it
+            on_press: root.evl()
+        Number:
+            text: '7'
+        Number:
+            text: '8'
+        Number:
+            text: '9'
+        # Box layout for parentheses
+        BoxLayout:
+            Number:
+                text: '('
+            Number:
+                text: ')'
+
+<Popups>:
+    title: "Error!"
+    size_hint: None, None
+    size: 500, 200
+    # This property makes sure that the popup does not dismiss by clicking anywhere
+    auto_dismiss: False
+    # We need two widgets inside the popup widget so we create a boxlayout
+    BoxLayout:
+        orientation: 'vertical'
+        # A label to display the message
+        Label:
+            text: "An error has occured. Please check your expression."
+        # A button which, on press, will call dismiss function of root
+        # Here, the root is not calculator class, but Popups class which is derived from Popup widget
+        # Only the properties of popup are here, but as the class is derived from popup, all methods can be called on class itself
+        # root.dismiss() is essentially self.dismiss() inside python inside the Popups() class
+        Button:
+            text: "OK"
+            on_press: root.dismiss()
+
+        
