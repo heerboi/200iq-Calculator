@@ -9,16 +9,31 @@
 # app.root.ids.answer.text refers to the text of Label with id = 'answer' in root class
 <Number@Button>:
     on_press: app.root.ids.answer.text += self.text
+    background_color: 0, 0, 0, 1
+    color: .863, .078, .235
+    on_press: self.background_color = (1, 1, 1, 1)
+    on_release: self.background_color = (0, 0, 0, 1)
+    background_down: ''
+    background_normal: ''
 
 <Calculator>:
     orientation: 'vertical'
     # Main answer label
-    Label:
-        id: answer
-        font_size: 100
-        text_size: 800, 100
+    ScrollView:
+        do_scroll_x: False
+        valign: 'middle'
         halign: 'center'
-        valign: 'top'
+        scroll_type: ['bars', 'content']
+        scroll_y: 0.5
+        Label:
+            id: answer
+            font_size: 100
+            text_size: root.width, None
+            size: self.texture_size
+            size_hint: None, None
+            valign: 'bottom'
+            halign: 'center'
+            color: 1, 1, 1, 1
     # GridLayout for the buttons
     GridLayout:
         cols: 4
@@ -43,10 +58,22 @@
                 text: 'CLR'
                 # This clears the answer text 
                 on_press: answer.text = ""
+                on_press: self.background_color = (1, 1, 1, 1)
+                background_color: 0, 0, 0, 1
+                color: .863, .078, .235
+                on_release: self.background_color = (0, 0, 0, 1)
+                background_down: ''
+                background_normal: ''
             Button:
                 text: 'BCK'
                 # This removes one character from answer text (backspace)
                 on_press: answer.text = answer.text[:-1]
+                on_press: self.background_color = (1, 1, 1, 1)
+                background_color: 0, 0, 0, 1
+                color: .863, .078, .235
+                on_release: self.background_color = (0, 0, 0, 1)
+                background_down: ''
+                background_normal: ''
         Number:
             text: '4'
         Number:
@@ -62,6 +89,12 @@
             # it will first try to set the answer text to answer
             # if error, it will create popups object and open it
             on_press: root.evl()
+            on_press: self.background_color = (1, 1, 1, 1)
+            background_color: 0, 0, 0, 1
+            color: .863, .078, .235
+            on_release: self.background_color = (0, 0, 0, 1)
+            background_down: ''
+            background_normal: ''
         Number:
             text: '7'
         Number:
@@ -81,12 +114,17 @@
     size: 500, 200
     # This property makes sure that the popup does not dismiss by clicking anywhere
     auto_dismiss: False
+    background_color: 0, 0, 0, 1
+    color: .863, .078, .235
+    title_color: .863, .078, .235
     # We need two widgets inside the popup widget so we create a boxlayout
     BoxLayout:
         orientation: 'vertical'
         # A label to display the message
         Label:
-            text: "An error has occured. Please check your expression."
+            text: root.message
+            background_color: 0, 0, 0, 1
+            color: .863, .078, .235
         # A button which, on press, will call dismiss function of root
         # Here, the root is not calculator class, but Popups class which is derived from Popup widget
         # Only the properties of popup are here, but as the class is derived from popup, all methods can be called on class itself
@@ -94,5 +132,11 @@
         Button:
             text: "OK"
             on_press: root.dismiss()
+            on_press: self.background_color = (1, 1, 1, 1)
+            background_color: 0, 0, 0, 1
+            color: .863, .078, .235
+            on_release: self.background_color = (0, 0, 0, 1)
+            background_down: ''
+            background_normal: ''
 
         
